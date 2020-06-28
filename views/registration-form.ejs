@@ -1,0 +1,40 @@
+<html>
+  <head>
+    <title>
+      Registration Form
+    </title>
+  </head>
+  <body>
+    <form action="/task/register" method="POST">
+      <label>Name:</label>
+      <input type="text" name="name" placeholder="enetr your name" required />
+      <label>
+        email:
+      </label>
+      <input type="email" name="email" placeholder="enter email" required />
+      <label>Password:</label>
+      <input
+        type="password"
+        name="password"
+        placeholder="enter password"
+        required
+      />
+      <p>Gender:</p>
+      <input type="radio" name="gender" value="male" />
+      <label>Male</label>
+      <input type="radio" name="gender" value="female" />
+      <label>Female</label>
+      <input type="radio" name="gender" value="other" />
+      <label>Other</label>
+      <label>DOB:</label>
+      <input type="date" name="dob" required />
+      <label>Profession:</label>
+      <select name="profession" required>
+        <option value="student">Student</option>
+        <option value="employee">Employee</option>
+        <option value="other">Other</option>
+      </select>
+      <button type="submit">Submit</button>
+    </form>
+  </body>
+</html>

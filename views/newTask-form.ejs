@@ -1,0 +1,30 @@
+<html>
+  <head>
+    <title>
+      Add New Task
+    </title>
+  </head>
+  <body>
+    <form action="/task" method="POST">
+      <label for="name">Name:</label>
+      <input
+        type="text"
+        name="name"
+        id="name"
+        placeholder="Enter the name of the task"
+      />
+      <label for="duedate">Due Date:</label>
+      <input type="date" id="duedate" name="duedate" />
+      <label for="label">Label:</label>
+      <select name="label" id="label">
+        <option value="work">Work</option>
+        <option value="personal">Personal</option>
+        <option value="study">Study</option>
+        <option value="shopping">Shopping</option>
+        <option value="others">Others</option>
+      </select>
+      <textarea name="description" id="description"></textarea>
+      <button type="submit">Submit</button>
+    </form>
+  </body>
+</html>

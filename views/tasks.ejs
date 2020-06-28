@@ -1,0 +1,38 @@
+<html>
+  <head>
+    <title>List of tasks</title>
+  </head>
+
+  <body>
+    <form action="/task/sort-by-status" method="POST">
+      <input type="radio" id="new" name="status" value="new" />
+      <label for="new">New</label><br />
+      <input type="radio" id="progress" name="status" value="progress" />
+      <label for="progress">Progress</label><br />
+      <button type="submit">Go</button>
+    </form>
+    <form action="/task/sort-by-label" method="POST">
+      <input type="radio" id="work" name="label" value="work" />
+      <label for="work">Work</label><br />
+      <input type="radio" id="personal" name="label" value="personal" />
+      <label for="personal">Personal</label><br />
+      <input type="radio" id="study" name="label" value="study" />
+      <label for="study">Study</label>
+      <input type="radio" id="shopping" name="label" value="shopping" />
+      <label for="shopping">Shopping</label>
+      <input type="radio" id="others" name="label" value="others" />
+      <label for="others">Others</label>
+      <button type="submit">Go</button>
+    </form>
+    <ul>
+      <% tasks.forEach(task=>{ %>
+      <li><%= task.name %></li>
+      <li><%= task.description %></li>
+      <li><%= task.dueDate %></li>
+      <li><%= task.status %></li>
+      <li><%= task.label %></li>
+      <% }) %>
+    </ul>
+    <h1>kikkbkjjk</h1>
+  </body>
+</html>

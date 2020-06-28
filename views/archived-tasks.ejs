@@ -1,0 +1,16 @@
+<html>
+  <head>
+    <title>List of tasks</title>
+  </head>
+  <body>
+    <ul>
+      <% archivedTasks.forEach(task=>{ %>
+      <li><%= task.name %></li>
+      <li><%= task.description %></li>
+      <li><%= task.dueDate %></li>
+      <li><%= task.status %></li>
+      <li><%= task.label %></li>
+      <% }) %>
+    </ul>
+  </body>
+</html>

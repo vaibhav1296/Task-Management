@@ -1,0 +1,35 @@
+<html>
+  <head>
+    <title>
+      Edit The Task
+    </title>
+  </head>
+  <body>
+    <form action="/task/<%= taskObject.id %>?_method=PUT" method="POST">
+      <label for="name">Name:</label>
+      <input type="text" name="name" id="name" value="<%= taskObject.name %>" />
+      <label for="status">Status:</label>
+      <select name="status" id="status" value="<%= taskObject.status %>">
+        <option value="new">New</option>
+        <option value="progress">Progress</option>
+        <option value="completed">Completed</option>
+      </select>
+      <label for="label">Label:</label>
+      <select name="label" id="label" value="<%= taskObject.label %>">
+        <option value="work">Work</option>
+        <option value="personal">Personal</option>
+        <option value="study">Study</option>
+        <option value="shopping">Shopping</option>
+        <option value="others">Others</option>
+      </select>
+      <label for="description">Description:</label>
+      <input
+        type="text"
+        name="description"
+        id="description"
+        value="<%= taskObject.description %>"
+      />
+      <button type="submit">Submit</button>
+    </form>
+  </body>
+</html>
