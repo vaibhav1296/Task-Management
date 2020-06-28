@@ -1,25 +1,25 @@
 {
   "development": {
-    "username": "postgres",
-    "password": "postgres",
-    "database": "task_management",
-    "host": "127.0.0.1",
+    "username": "process.env.DB_USERNAME",
+    "password": "process.env.DB_PASSWORD",
+    "database": "process.env.DB_NAME",
+    "host": "process.env.DB_HOST",
     "dialect": "postgres",
     "operatorsAliases": "0"
   },
   "test": {
-    "username": "postgres",
-    "password": "postgres",
-    "database": "task_management",
-    "host": "127.0.0.1",
+    "username": "process.env.DB_USERNAME",
+    "password": "process.env.DB_PASSWORD",
+    "database": "process.env.DB_NAME",
+    "host": "process.env.DB_HOST",
     "dialect": "postgres",
     "operatorsAliases": "0"
   },
   "production": {
-    "username": "postgres",
-    "password": "postgres",
-    "database": "task_management",
-    "host": "127.0.0.1",
+    "username": "process.env.DB_USERNAME",
+    "password": "process.env.DB_PASSWORD",
+    "database": "process.env.DB_NAME",
+    "host": "process.env.DB_HOST",
     "dialect": "postgres",
     "operatorsAliases": "0"
   }

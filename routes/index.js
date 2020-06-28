@@ -19,7 +19,7 @@ router.post("/register", (req, res) => {
   queryObject.findUserWithEmail(req.body.email).then((user) => {
     console.log("user", user);
     if (!user) {
-      bcrypt.genSalt(6, (err, salt) => {
+      bcrypt.genSalt(process.env.ROUND, (err, salt) => {
         if (err) {
           console.log("something wrong with bcrypt");
           res.redirect("/task/register");

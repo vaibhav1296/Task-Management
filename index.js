@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt");
@@ -13,7 +14,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use(
   require("express-session")({
-    secret: "Mahi bhai is love",
+    secret: process.env.SECRET,
     resave: false,
     saveUninitialized: false,
   })

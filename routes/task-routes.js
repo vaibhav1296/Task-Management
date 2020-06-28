@@ -7,9 +7,7 @@ const sgMail = require("@sendgrid/mail");
 // const cron = require("node-cron");
 const schedule = require("node-schedule");
 const uuid = require("uuid");
-sgMail.setApiKey(
-  "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"
-);
+sgMail.setApiKey(process.env.API_KEY);
 var tasksArr = [];
 
 router.get("/all", middlewareObject.isLogIn, (req, res) => {
