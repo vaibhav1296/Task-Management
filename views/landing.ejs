@@ -1,0 +1,42 @@
+<%- include("./partials/header") %>
+
+<div class="showcase">
+    <div class="div1">
+      <div class="landing-box">
+        <h2 class="typing"></h2>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto,
+          assumenda veniam delectus, eos laborum aliquid similique quos iure
+          nostrum nobis reprehenderit sint expedita tenetur nisi natus sunt
+          fugiat sed beatae.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto,
+          assumenda veniam delectus, eos laborum aliquid similique quos iure
+          nostrum nobis reprehenderit sint expedita tenetur nisi natus sunt
+          fugiat sed beatae.
+        </p>
+        <div class="landing-btn">
+         <% if(!currentUser){ %>
+          <a href="/task/login">Get started <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+        <% }else{ %>
+          <a href="/task/all">Get started <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+        <% } %>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="div2">
+      <div class="image-1">
+        <img src="/css/question.jpg" alt="jawab de suar" />
+      </div>
+      <div class="image-2">
+        <img src="/css/notes.jpg" alt="likh ke dikha harami" />
+      </div>
+      <div class="image-3">
+        <img src="/css/mind.jpg" alt="khopdi me tatti hai tere" />
+      </div>
+    </div>
+  </div>
+
+  <%- include("./partials/footer") %>

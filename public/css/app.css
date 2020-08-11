@@ -1,0 +1,460 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+  }
+  body {
+    background-color: white;
+    color: #4d0028;
+    font-family: "Open Sans", sans-serif;
+  }
+  /* =====================LANDING=========================== */
+  .showcase {
+    display: flex;
+  }
+  .div1 {
+    width: 50%;
+  }
+  .landing-box {
+    position: relative;
+    color: #4d0028;
+    width: 70%;
+    padding: 10px;
+    line-height: 22px;
+    letter-spacing: 1px;
+    top: 15%;
+    left: 15%;
+  }
+  
+  .landing-box > p {
+    text-indent: 35px;
+    padding: 2px;
+    margin: 5px;
+  }
+  .landing-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #4d0028;
+    margin: 5px;
+    width: 50%;
+    height: 30px;
+    border-radius: 5px;
+  }
+  .landing-btn > a {
+    color: white;
+    text-decoration: none;
+    margin: auto;
+  }
+  .typing {
+    margin-left: 5px;
+  }
+  .div2 {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    height: 92vh;
+  }
+  .image-1 {
+    height: 30vh;
+  }
+  .image-1 > img {
+    float: right;
+    border-radius: 10px;
+    height: 120px;
+    width: 30%;
+    margin: 30px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    animation-name: imgrotate-1;
+    animation-duration: 2s;
+    animation-fill-mode: forwards;
+  }
+  
+  .image-2 {
+    height: 30vh;
+  }
+  
+  .div2 img {
+    opacity: 0;
+  }
+  .image-2 > img {
+    border-radius: 10px;
+    margin: 30px;
+    height: 120px;
+    width: 30%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    animation-name: imgrotate-2;
+    animation-duration: 2s;
+    animation-fill-mode: forwards;
+    animation-delay: 1s;
+  }
+  
+  .image-3 {
+    height: 30vh;
+  }
+  .image-3 > img {
+    float: right;
+    border-radius: 10px;
+    height: 120px;
+    margin: 30px;
+    width: 30%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    animation-name: imgrotate-1;
+    animation-duration: 2s;
+    animation-fill-mode: forwards;
+    animation-delay: 2s;
+  }
+  @keyframes imgrotate-1 {
+    100% {
+      transform: rotate(20deg);
+      opacity: 1;
+    }
+    0% {
+      opacity: 0;
+    }
+  }
+  @keyframes imgrotate-2 {
+    100% {
+      transform: rotate(-20deg);
+      opacity: 1;
+    }
+    0% {
+      opacity: 0;
+    }
+  }
+  @keyframes imgrotate-3 {
+    100% {
+      transform: rotate(20deg);
+    }
+  }
+  /* =====================LANDING================================== */
+  /*======================= NAVBAR CSS =============================*/
+  #logo {
+    background-color: white;
+    width: 80%;
+    color: blue;
+  }
+  nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 8vh;
+    background-color: #4d0028;
+  }
+  .nav-logo {
+    color: white;
+    letter-spacing: 5px;
+    font-size: 20px;
+    font-family: 'Permanent Marker', cursive;
+  }
+  .nav-logo a{
+    text-decoration: none;
+    color: white;
+  }
+  .nav-links {
+    display: flex;
+    justify-content: space-around;
+    width: 50%;
+  }
+  .nav-links li {
+    list-style: none;
+  }
+  .nav-links a {
+    color: white;
+    text-decoration: none;
+    letter-spacing: 3px;
+  }
+  .burger {
+    display: none;
+  }
+  .burger div {
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    margin: 5px;
+  }
+  
+  @media screen and (max-width: 1024px) {
+    
+    .showcase {
+      flex-direction: column-reverse;
+    }
+    .div1 {
+      width: 100%;
+    }
+    .div2 {
+      width: 100%;
+    }
+    .landing-box {
+      padding: 2px;
+      line-height: 18px;
+      left: 0%;
+    }
+    .image-1 > img {
+      float: right;
+      border-radius: 8px;
+      height: 100px;
+      width: 25%;
+      margin: 30px;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      animation-name: imgrotate-1;
+      animation-duration: 2s;
+      animation-fill-mode: forwards;
+    }
+    .image-2 > img {
+      border-radius: 8px;
+      margin: 20px;
+      height: 100px;
+      width: 25%;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      animation-name: imgrotate-2;
+      animation-duration: 2s;
+      animation-fill-mode: forwards;
+      animation-delay: 1s;
+    }
+    .image-3 > img {
+      float: right;
+      border-radius: 8px;
+      height: 100px;
+      margin: 20px;
+      width: 25%;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      animation-name: imgrotate-1;
+      animation-duration: 2s;
+      animation-fill-mode: forwards;
+      animation-delay: 2s;
+    }
+    .nav-links {
+      position: absolute;
+      width: 45%;
+      right: 0%;
+      top: 8vh;
+      height: 32vh;
+      background-color: #4d0028;
+      flex-direction: column;
+      align-items: center;
+      opacity: 0;
+      z-index: 1;
+    }
+    .burger {
+      display: block;
+      cursor: pointer;
+    }
+  }
+  
+  .fadein {
+    animation: fade 0.5s forwards;
+    /* animation-duration: 1s; */
+  }
+  .fadeout {
+    animation: fade-out 0.5s;
+    /* animation-duration: 1s; */
+  }
+  /* .nav-active {
+    opacity: 1;
+    transition: all 0.5s ease-out;
+  } */
+  
+  @keyframes fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes fade-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+  /*==================================== NAVBAR-CSS =====================================*/
+  
+  hr {
+    color: #4d0028;
+  }
+  .container-register {
+    margin: 30px auto;
+    padding: 20px;
+    width: 65%;
+    height: 100%;
+    background-color: white;
+    border-radius: 1%;
+    border: none;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+  }
+  .container-login {
+    margin: 30px auto;
+    padding: 20px;
+    width: 65%;
+    background-color: white;
+    border-radius: 1%;
+    border: none;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+  .heading {
+    display: flex;
+    justify-content: center;
+    font-size: 30px;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+  }
+  
+  .form-body {
+    position: relative;
+    margin: auto;
+    width: 85%;
+    top: 5px;
+  }
+  label {
+    width: 35%;
+    margin: 10px;
+    padding-left: 16px;
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 2px;
+  }
+  #login-label {
+    margin: 10px;
+    padding-left: 16px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  select {
+    width: 67%;
+    height: 40px;
+    margin: 3px;
+    padding-left: 16px;
+    border-radius: 10px;
+    background-color: white;
+    border: 1px solid #4d0028;
+  }
+  input {
+    
+    width: 67%;
+    margin: 3px;
+    height: 40px;
+    padding: 5px 5px 5px 15px;
+    border-radius: 10px;
+    border: 1px solid #4d0028;
+    background-color: white;
+  }
+  textarea {
+    width: 67%;
+    margin: 3px;
+    padding: 5px;
+    border-radius: 10px;
+    border: 1px solid #4d0028;
+    background-color: white;
+  }
+  #login-input {
+    width: 75%;
+    margin: 5px;
+    height: 40px;
+    padding: 5px 5px 5px 15px;
+    border-radius: 10px;
+    border: 1px solid #4d0028;
+    background-color: white;
+  }
+  .form-group {
+    display: flex;
+    justify-content: space-between;
+    margin: 30px 10px;
+    height: 50px;
+  }
+  #btn-group {
+    display: flex;
+    margin: 15px;
+    margin-bottom: 30px;
+  }
+  #log-sign-btn {
+    width: 70%;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 5px auto;
+    background-color: #1a000d;
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    letter-spacing: 2px;
+  }
+  
+  /* home page starts */
+  /* home page ends */
+  @media screen and (max-width: 950px) {
+    .landing-box {
+      top: 8%;
+      left: 10%;
+      padding: 5px;
+      line-height: 20px;
+    }
+    .container-register {
+      width: 90%;
+    }
+    .container-login {
+      width: 90%;
+    }
+  }
+  
+  @media screen and (max-width: 600px) {
+    .container-register {
+      width: 90%;
+      margin: 30px auto;
+    }
+    .container-login {
+      width: 90%;
+      margin: 30px auto;
+    }
+    .heading {
+      font-size: 25px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      height: inherit;
+    }
+    label {
+      margin: 3px 0px;
+      padding-left: 3px;
+      width:50%;
+    }
+    input {
+      width: 95%;
+      height: 40px;
+    }
+    textarea {
+      width: 92%;
+    }
+    #login-input {
+      width: 97%;
+      height: 40px;
+    }
+    #login-label {
+      margin: 3px 0px;
+      padding-left: 3px;
+      width: 80%;
+
+    }
+    select {
+      width: 95%;
+      height: 38px;
+    }
+    #log-sign-btn {
+      width: 100%;
+    }
+  }
+  
+  footer {
+    height: 40px;
+    background-color: #4d0028;
+    text-align: center;
+    line-height: 22px;
+    letter-spacing: 2px;
+    padding: 15px;
+  }
+  

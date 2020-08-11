@@ -1,0 +1,257 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+  }
+  body {
+    background-color: white;
+    color: #4d0028;
+    font-family: "Open Sans", sans-serif;
+  }
+  
+  /*======================= NAVBAR CSS =============================*/
+  nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 8vh;
+    background-color: #4d0028;
+  }
+  .nav-logo {
+    color: white;
+    letter-spacing: 5px;
+    font-size: 20px;
+    font-family: 'Permanent Marker', cursive;
+  }
+  .nav-logo a{
+    text-decoration: none;
+    color: white;
+  }
+  .nav-links {
+    display: flex;
+    justify-content: space-around;
+    width: 50%;
+  }
+  .nav-links li {
+    list-style: none;
+  }
+  .nav-links a {
+    color: white;
+    text-decoration: none;
+    letter-spacing: 3px;
+  }
+  .burger {
+    display: none;
+  }
+  .burger div {
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    margin: 5px;
+  }
+  @media screen and (max-width: 1024px) {
+    .nav-links {
+      position: absolute;
+      width: 45%;
+      right: 0%;
+      top: 8vh;
+      height: 32vh;
+      background-color: #4d0028;
+      flex-direction: column;
+      align-items: center;
+      opacity: 0;
+      z-index: 1;
+    }
+    .burger {
+      display: block;
+      cursor: pointer;
+    }
+  }
+  .fadein {
+    animation: fade 0.5s forwards;
+  }
+  .fadeout {
+    animation: fade-out 0.5s;
+  }
+  
+  @keyframes fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes fade-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+  
+  /*======================== task profile page ================================*/
+  .container {
+    margin: 40px 20px;
+    width: 60%;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+  }
+  .filter {
+    
+    width: 20%;
+    position: fixed;
+    top: 30%;
+    right: 0%;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+  }
+  .form-1 {
+    margin: 10px;
+    padding: 5px;
+  }
+  .form-group {
+    margin: 2px;
+    padding: 1px;
+  }
+  button {
+    background-color: #4d0028;
+    color: white;
+    height: 20px;
+    border-radius: 5px;
+    border:none;
+    width: 30%;
+    margin: 2px;
+    padding: 1px;
+    font-size: 12px;
+    letter-spacing: 1px;
+    float: right;
+  }
+  .filter-hr{
+    width: 90%;
+    margin:auto;
+  }
+  .name {
+    display: grid;
+    grid-template-columns: auto;
+    text-align: center;
+    padding: 10px;
+    margin: 10px;
+    border-bottom: 1px solid rgba(77,0,40,0.2);
+  }
+  .desc {
+    display: grid;
+    grid-template-columns: auto;
+    text-align: center;
+    line-height: 20px;
+    letter-spacing: 1px;
+    padding: 5px;
+    margin: 10px;
+    border-bottom: 1px solid rgba(77,0,40,0.2);
+  }
+  .label-info {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    text-align: center;
+    margin: 10px;
+    padding: 10px;
+    border-bottom: 1px solid rgba(77,0,40,0.2);
+  }
+  .label {
+    border-right: 1px solid rgba(77,0,40,0.2);
+  }
+  .status {
+    border-right: 1px solid rgba(77,0,40,0.2);
+  }
+  .btns {
+    display: grid;
+    grid-template-columns: auto auto;
+    padding: 10px;
+    text-align: center;
+    margin: 5px 10px;
+  }
+  .back-btn {
+    border-right: 1px solid rgba(77,0,40,0.2);
+  }
+  .edit-btn {
+    height: 30px;
+    background-color: black;
+    width: 30%;
+    margin: auto;
+    text-align: center;
+    padding: 4px;
+    border-radius: 5px;
+  }
+  .edit-btn a {
+    text-decoration: none;
+    color: white;
+    letter-spacing: 1px;
+  }
+  footer {
+    height: 10vh;
+    background-color: #4d0028;
+  }
+  /*======================== task profile page ================================*/
+  @media screen and (max-width: 1050px) {
+    
+    .container {
+      width: 75%;
+    }
+  }
+  @media screen and (max-width: 900px) {
+    .filter-hr{
+      display:none;
+    }
+    
+    .filter {
+      width: 40%;
+      position: relative;
+      margin: 20px;
+      top: 10%;
+      left: 0%;
+      border-radius: 5px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+    }
+    .form-1 {
+      width: 100%;
+      margin: 10px;
+      padding: 5px;
+    }
+    .form-group {
+      margin: 1px;
+      padding: 1px;
+    }
+    button {
+      height: 20px;
+      border-radius: 5px;
+      width: 40%;
+      padding: 1px;
+      font-size: 10px;
+      float: right;
+    }
+  }
+  @media screen and (max-width: 768px) {
+    .container {
+      width: 90%;
+      height: auto;
+    }
+    .filter {
+      width: 60%;
+    }
+    .form-1 {
+      padding: 2px;
+    }
+    button {
+      width: 40%;
+    }
+    .edit-btn {
+      width: 40%;
+    }
+  }
+  
