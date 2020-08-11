@@ -4,31 +4,72 @@ const queryObject = require("../DAO/queryDAO");
 const models = require("../models/index");
 const middlewareObject = require("../middleware/authentication");
 const sgMail = require("@sendgrid/mail");
-// const cron = require("node-cron");
+
 const schedule = require("node-schedule");
 const uuid = require("uuid");
 sgMail.setApiKey(process.env.API_KEY);
 var tasksArr = [];
-
+var flashMessage = {
+  flashMessage: "",
+  state: false,
+};
+router.get("/", (req, res) => {
+  if (req.session.flashState === true) {
+    req.session.flashState = false;
+    res.render("../views/tasks", { flashMessage: flashMessage });
+  } else {
+    flashMessage.state = false;
+    res.render("../views/tasks", { flashMessage: flashMessage });
+  }
+});
 router.get("/all", middlewareObject.isLogIn, (req, res) => {
   queryObject
     .getAllTasks(req.session.user.id)
     .then((tasks) => {
-      tasks = tasks.map((task) => {
-        return {
-          name: task.dataValues.name,
-          description: task.dataValues.description,
-          label: task.dataValues.label.dataValues.type,
-          status: task.dataValues.status.dataValues.name,
-          dueDate: task.dataValues.dueDate,
-        };
-      });
-      tasksArr = [...tasks];
-      console.log(tasks);
-      res.render("../views/tasks", { tasks: tasks });
+      if (tasks.length !== 0) {
+        tasks = tasks.map((task) => {
+          task.dataValues.dueDate = String(task.dataValues.dueDate)
+            .split(" ")
+            .slice(1, 4)
+            .join("-");
+          return {
+            id: task.dataValues.id,
+            name: task.dataValues.name,
+            description: task.dataValues.description,
+            label: task.dataValues.label.dataValues.type,
+            status: task.dataValues.status.dataValues.name,
+            dueDate: task.dataValues.dueDate,
+          };
+        });
+        tasksArr = [...tasks];
+        if (req.session.flashState === true) {
+          req.session.flashState = false;
+          console.log("tasks are", tasks);
+          res.render("../views/tasks", {
+            tasks: tasks,
+            flashMessage: flashMessage,
+          });
+        } else {
+          flashMessage.state = false;
+          res.render("../views/tasks", {
+            tasks: tasks,
+            flashMessage: flashMessage,
+          });
+        }
+      } else {
+        flashMessage.message = "There is no task";
+        flashMessage.state = true;
+        res.render("../views/tasks", {
+          tasks: tasks,
+          flashMessage: flashMessage,
+        });
+      }
     })
     .catch((err) => {
-      console.log(err);
+      req.session.flashState = true;
+      flashMessage.message = "somthing went wrong";
+      flashState.state = true;
+      res.redirect("/task");
     });
 });
 router.get("/archived", middlewareObject.isLogIn, (req, res) => {
@@ -36,11 +77,13 @@ router.get("/archived", middlewareObject.isLogIn, (req, res) => {
   queryObject
     .getAllArchivedTask(userId)
     .then((archivedTasks) => {
-      // console.log(archivedTask);
-      // console.log(archivedTask[0].dataValues.id);
-      // console.log(archivedTask[0].dataValues.task);
-      console.log(archivedTasks[0].dataValues.task);
       archivedTasks = archivedTasks.map((archivedTask) => {
+        archivedTask.dataValues.task.dataValues.due_date = String(
+          archivedTask.dataValues.task.dataValues.due_date
+        )
+          .split(" ")
+          .slice(1, 4)
+          .join("-");
         return {
           id: archivedTask.dataValues.id,
           name: archivedTask.dataValues.task.dataValues.name,
@@ -51,113 +94,141 @@ router.get("/archived", middlewareObject.isLogIn, (req, res) => {
           description: archivedTask.dataValues.task.dataValues.description,
         };
       });
-      console.log("archived arrya = ", archivedTasks);
-      res.render("../views/archived-tasks", { archivedTasks: archivedTasks });
+      if (archivedTasks.length !== 0) {
+        res.render("../views/archived-tasks", {
+          archivedTasks: archivedTasks,
+        });
+      } else {
+        req.session.flashState = true;
+        flashMessage.message = "Nothing found in archives";
+        flashMessage.state = true;
+        res.redirect("/task/all");
+      }
     })
     .catch((err) => {
-      console.log("err getArchived");
-      console.log(err);
+      req.session.flashState = true;
+      flashMessage.message = "Something went wrong with archives";
+      flashMessage.state = true;
+      res.redirect("/task/all");
     });
 });
 router.post("/sort-by-label", middlewareObject.isLogIn, (req, res) => {
-  const labelName = req.body.label.toUpperCase();
-  let labelArr = [...tasksArr];
-  labelArr = labelArr.filter((task) => {
-    return task.label === labelName;
-  });
-  res.render("../views/tasks", { tasks: labelArr });
-  // queryObject
-  //   .selectByLabel(req.body.label.toUpperCase(), req.session.user.id)
-  //   .then((tasks) => {
-  //     tasks = tasks.map((task) => {
-  //       return {
-  //         name: task.dataValues.name,
-  //         description: task.dataValues.description,
-  //         label: task.dataValues.label.dataValues.type,
-  //         status: task.dataValues.status.dataValues.name,
-  //         dueDate: task.dataValues.dueDate,
-  //       };
-  //     });
-  //     res.render("../views/tasks", { tasks: tasks });
-  //   })
-  //   .catch((err) => {
-  //     console.log(err);
-  //   });
+  if (req.body.label !== null && req.body.label !== undefined) {
+    const labelName = req.body.label.toUpperCase();
+    let labelArr = [...tasksArr];
+    labelArr = labelArr.filter((task) => {
+      return task.label === labelName;
+    });
+    flashMessage.state = false;
+    res.render("../views/tasks", {
+      tasks: labelArr,
+      flashMessage: flashMessage,
+    });
+  } else {
+    req.session.flashState = true;
+    flashMessage.message = "Please select a label";
+    flashMessage.state = true;
+    res.redirect("/task/all");
+  }
 });
 
 router.post("/sort-by-status", (req, res) => {
-  const statusName = req.body.status.toUpperCase();
-  let statusArr = [...tasksArr];
-  statusArr = statusArr.filter((task) => {
-    return task.status === statusName;
-  });
-  res.render("../views/tasks", { tasks: statusArr });
-  // queryObject
-  //   .selectByStatus(req.body.status.toUpperCase(), req.session.user.id)
-  //   .then((tasks) => {
-  //     tasks = tasks.map((task) => {
-  //       return {
-  //         name: task.dataValues.name,
-  //         description: task.dataValues.description,
-  //         label: task.dataValues.label.dataValues.type,
-  //         status: task.dataValues.status.dataValues.name,
-  //         dueDate: task.dataValues.dueDate,
-  //       };
-  //     });
-  //     res.render("../views/tasks", { tasks: tasks });
-  //   })
-  //   .catch((err) => {
-  //     console.log(err);
-  //   });
+  if (req.body.status !== null && req.body.status !== undefined) {
+    const statusName = req.body.status.toUpperCase();
+    let statusArr = [...tasksArr];
+    statusArr = statusArr.filter((task) => {
+      return task.status === statusName;
+    });
+
+    flashMessage.state = false;
+    res.render("../views/tasks", {
+      tasks: statusArr,
+      flashMessage: flashMessage,
+    });
+  } else {
+    req.session.flashState = true;
+    flashMessage.message = "Please select a status";
+    flashMessage.state = true;
+    res.redirect("/task/all");
+  }
 });
 router.get("/new", middlewareObject.isLogIn, (req, res) => {
-  res.render("../views/newTask-form");
+  if (req.session.flashState === true) {
+    req.session.flashState = false;
+    res.render("../views/newTask-form", { flashMessage: flashMessage });
+  } else {
+    flashMessage.state = false;
+    res.render("../views/newTask-form", { flashMessage: flashMessage });
+  }
 });
 router.post("/", (req, res) => {
+  console.log(req.session.user);
   const status = "NEW";
   const label = req.body.label.toUpperCase();
-  queryObject
-    .getSatusId(status)
-    .then((statusId) => {
-      queryObject
-        .getLabelId(label)
-        .then((labelId) => {
-          const taskDetail = {
-            name: req.body.name,
-            dueDate: req.body.duedate,
-            statusId: statusId.dataValues.id,
-            labelId: labelId.dataValues.id,
-            userId: req.session.user.id,
-            description: req.body.description,
-          };
-          queryObject
-            .createANewTask(taskDetail)
-            .then((newTask) => {
-              const date = String(taskDetail.dueDate);
-              const arr = date.split("-");
-              const newDate = new Date(arr[0], arr[1] - 1, arr[2], 13, 1, 0);
-              var j = schedule.scheduleJob(newDate, () => {
-                console.log("function schedule job ran");
-                sgMail.send({
-                  to: "sharma.prithvi2017@gmail.com",
-                  from: "sharmavaibhav5796@gmail.com",
-                  subject: "Task Management",
-                  html: "<strong>YOU HAVE A TASK PENDING</strong>",
+  const currentTime = new Date().getTime();
+  const dueDateTime = new Date(req.body.duedate).getTime();
+  if (dueDateTime > currentTime) {
+    queryObject
+      .getSatusId(status)
+      .then((statusId) => {
+        queryObject
+          .getLabelId(label)
+          .then((labelId) => {
+            const taskDetail = {
+              name: req.body.name,
+              dueDate: req.body.duedate,
+              statusId: statusId.dataValues.id,
+              labelId: labelId.dataValues.id,
+              userId: req.session.user.id,
+              description: req.body.description,
+            };
+            queryObject
+              .createANewTask(taskDetail)
+              .then((newTask) => {
+                const date = String(taskDetail.dueDate);
+                const arr = date.split("-");
+                const newDate = new Date(arr[0], arr[1] - 1, arr[2], 13, 1, 0);
+                var j = schedule.scheduleJob(newDate, () => {
+                  console.log("function schedule job ran");
+                  sgMail.send({
+                    to: req.session.user.email,
+                    from: process.env.SG_MAIL,
+                    subject: "Task Management",
+                    html:
+                      "<h3>Hi TikTask User</h3></br><p>One of your task is due tomorrow. So don't waste your time and finish it today</p></br><p>Regards from</p></br><p>TikTask Team</p>",
+                  });
                 });
+                req.session.flashState = true;
+                flashMessage.message = "Successfully added a new task";
+                flashMessage.state = true;
+                res.redirect("/task/all");
+              })
+              .catch((err) => {
+                req.session.flashState = true;
+                flashMessage.message = "Something went wrong, please try again";
+                flashMessage.state = true;
+                res.redirect("/task/new");
               });
-              res.redirect("/task/all");
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+          })
+          .catch((err) => {
+            req.session.flashState = true;
+            flashMessage.message = "Something went wrong, please try again";
+            flashMessage.state = true;
+            res.redirect("/task/new");
+          });
+      })
+      .catch((err) => {
+        req.session.flashState = true;
+        flashMessage.message = "Something went wrong, please try again";
+        flashMessage.state = true;
+        res.redirect("/task/new");
+      });
+  } else {
+    req.session.flashState = true;
+    flashMessage.message = "The due date is wrong";
+    flashMessage.state = true;
+    res.redirect("/task/new");
+  }
 });
 
 router.get("/:id", (req, res) => {
@@ -219,18 +290,27 @@ router.get("/:id/edit", (req, res) => {
               res.render("../views/edit-task", { taskObject: taskObject });
             })
             .catch((err) => {
-              console.log("err getLabelById");
+              req.session.flashState = true;
+              flashMessage.message = "Something went wrong";
+              flashMessage.state = true;
               console.log(err);
+              res.redirect("/task/all");
             });
         })
         .catch((err) => {
-          console.log("err getStatusById");
+          req.session.flashState = true;
+          flashMessage.message = "Something went wrong";
+          flashMessage.state = true;
           console.log(err);
+          res.redirect("/task/all");
         });
     })
     .catch((err) => {
-      console.log("err related to getTaskById");
+      req.session.flashState = true;
+      flashMessage.message = "Something went wrong";
+      flashMessage.state = true;
       console.log(err);
+      res.redirect("/task/all");
     });
 });
 
@@ -259,29 +339,47 @@ router.put("/:id", (req, res) => {
                 queryObject
                   .createArchivedTask(userId, taskId)
                   .then((archivedTask) => {
-                    console.log(archivedTask);
-                    res.redirect(`/task/${req.params.id}`);
+                    req.session.flashState = true;
+                    flashMessage.message = "Task added to archives";
+                    flashMessage.state = true;
+                    res.redirect("/task/all");
                   })
                   .catch((err) => {
+                    req.session.flashState = true;
+                    flashMessage.message = "Something went wrong";
+                    flashMessage.state = true;
                     console.log(err);
+                    res.redirect("/task/all");
                   });
               } else {
-                res.redirect(`/task/${req.params.id}`);
+                req.session.flashState = true;
+                flashMessage.message = "task edited successfully";
+                flashMessage.state = true;
+                res.redirect("/task/all");
               }
             })
             .catch((err) => {
-              console.log("err updateTask");
+              req.session.flashState = true;
+              flashMessage.message = "Something went wrong";
+              flashMessage.state = true;
               console.log(err);
+              res.redirect("/task/all");
             });
         })
         .catch((err) => {
-          console.log("err getStatusId");
+          req.session.flashState = true;
+          flashMessage.message = "Something went wrong";
+          flashMessage.state = true;
           console.log(err);
+          res.redirect("/task/all");
         });
     })
     .catch((err) => {
-      console.log("err getLabelId");
+      req.session.flashState = true;
+      flashMessage.message = "Something went wrong";
+      flashMessage.state = true;
       console.log(err);
+      res.redirect("/task/all");
     });
 });
 

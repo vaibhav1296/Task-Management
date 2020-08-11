@@ -11,6 +11,7 @@ const indexRoutes = require("./routes/index");
 const taskRoutes = require("./routes/task-routes");
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(__dirname + "/public"));
 app.use(methodOverride("_method"));
 app.use(
   require("express-session")({
@@ -19,9 +20,13 @@ app.use(
     saveUninitialized: false,
   })
 );
-
+app.use((req, res, next)=>{
+  res.locals.currentUser = req.session.isLoggedIn;
+  res.locals.userName = req.session.userName;
+  next();
+});
 app.get("/", (req, res) => {
-  res.send("home page");
+  res.render("landing");
 });
 
 app.use("/task", indexRoutes);

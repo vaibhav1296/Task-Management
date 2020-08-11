@@ -1,40 +1,70 @@
-<html>
-  <head>
-    <title>
-      Registration Form
-    </title>
-  </head>
-  <body>
-    <form action="/task/register" method="POST">
-      <label>Name:</label>
-      <input type="text" name="name" placeholder="enetr your name" required />
-      <label>
-        email:
-      </label>
-      <input type="email" name="email" placeholder="enter email" required />
-      <label>Password:</label>
-      <input
-        type="password"
-        name="password"
-        placeholder="enter password"
-        required
-      />
-      <p>Gender:</p>
-      <input type="radio" name="gender" value="male" />
-      <label>Male</label>
-      <input type="radio" name="gender" value="female" />
-      <label>Female</label>
-      <input type="radio" name="gender" value="other" />
-      <label>Other</label>
-      <label>DOB:</label>
-      <input type="date" name="dob" required />
-      <label>Profession:</label>
-      <select name="profession" required>
-        <option value="student">Student</option>
-        <option value="employee">Employee</option>
-        <option value="other">Other</option>
-      </select>
-      <button type="submit">Submit</button>
-    </form>
-  </body>
-</html>
+<%- include("./partials/header") %>
+    <!-- <% if(flashMessage.state === true){ %>
+    <h2><%= flashMessage.message %></h2>
+    <% } %> -->
+    
+    <div class="container-register">
+      <div class="heading">
+        <p>Regsitration Form</p>
+      </div>
+      <hr />
+      <form action="/task/register" method="POST">
+        <div class="form-body">
+          <div class="form-group">
+            
+            <label><i class="fa fa-user" aria-hidden="true"></i> Name:</label>
+            <input
+              type="text"
+              name="name"
+              placeholder="enetr your name"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label><i class="fa fa-envelope" aria-hidden="true"></i> 
+              email:
+            </label>
+            <input
+              type="email"
+              name="email"
+              placeholder="enter email"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label><i class="fa fa-user-secret" aria-hidden="true"></i> Password:</label>
+            <input
+              type="password"
+              name="password"
+              placeholder="enter password"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label><i class="fa fa-neuter" aria-hidden="true"></i> Gender:</label>
+            <select name="gender" required>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label><i class="fa fa-calendar" aria-hidden="true"></i> DOB:</label>
+            <input type="date" name="dob" required />
+          </div>
+          <div class="form-group">
+            <label><i class="fa fa-briefcase" aria-hidden="true"></i> Profession:</label>
+            <select name="profession" required>
+              <option value="student">Student</option>
+              <option value="employee">Employee</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div id="btn-group">
+            <button type="submit" id="log-sign-btn">Register</button>
+          </div>
+        </div>
+      </form>
+    </div>
+<%- include("./partials/footer") %>    
+    

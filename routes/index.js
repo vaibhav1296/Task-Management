@@ -1,9 +1,14 @@
 const express = require("express");
 const router = express.Router();
+const app = express();
 const queryObject = require("../DAO/queryDAO");
 const bcrypt = require("bcrypt");
 const models = require("../models/index");
 const middlewareObject = require("../middleware/authentication");
+var flashMessage = {
+  message: "",
+  state: false,
+};
 // const utility = require("../utility/utility");
 
 // router.get("/secret", middlewareObject.isLogIn, (req, res) => {
@@ -12,49 +17,76 @@ const middlewareObject = require("../middleware/authentication");
 // });
 
 router.get("/register", (req, res) => {
-  res.render("../views/registration-form");
+  if (req.session.flashState === true) {
+    req.session.flashState = false;
+    res.render("../views/registration-form", { flashMessage: flashMessage });
+  } else {
+    flashMessage.state = false;
+    res.render("../views/registration-form", { flashMessage: flashMessage });
+  }
 });
 
 router.post("/register", (req, res) => {
   queryObject.findUserWithEmail(req.body.email).then((user) => {
-    console.log("user", user);
     if (!user) {
-      bcrypt.genSalt(process.env.ROUND, (err, salt) => {
-        if (err) {
-          console.log("something wrong with bcrypt");
-          res.redirect("/task/register");
-        } else {
-          bcrypt.hash(req.body.password, salt, (err, hash) => {
-            if (err) {
-              console.log("somthing went wrong with hash");
-            } else {
-              req.body.password = hash;
-              const user = {
-                name: req.body.name,
-                email: req.body.email,
-                hashedPassword: req.body.password,
-                gender: req.body.gender,
-                dob: req.body.dob,
-                profession: req.body.profession,
-              };
-              return queryObject
-                .createANewUser(user)
-                .then((user) => {
-                  if (user) {
-                    res.send("User registered successfully check DB");
-                  } else {
-                    res.send("something went wrong with registration");
-                  }
-                })
-                .catch((err) => {
-                  console.log(err);
-                });
-            }
-          });
-        }
-      });
+      if (req.body.password.length >= 5) {
+        bcrypt.genSalt(6, (err, salt) => {
+          if (err) {
+            console.log("something wrong with bcrypt");
+            res.redirect("/task/register");
+          } else {
+            bcrypt.hash(req.body.password, salt, (err, hash) => {
+              if (err) {
+                console.log("somthing went wrong with hash");
+              } else {
+                req.body.password = hash;
+                const user = {
+                  name: req.body.name,
+                  email: req.body.email,
+                  hashedPassword: req.body.password,
+                  gender: req.body.gender,
+                  dob: req.body.dob,
+                  profession: req.body.profession,
+                };
+                return queryObject
+                  .createANewUser(user)
+                  .then((user) => {
+                    if (user) {
+                      flashMessage.message = "User Registered successfully";
+                      flashMessage.state = true;
+                      req.session.flashState = true;
+                      res.redirect("/task/login");
+                    } else {
+                      flashMessage.message =
+                        "Something went wrong with registration";
+                      flashMessage.state = true;
+                      req.session.flashState = true;
+                      console.log("something went wrong with pata nahi ");
+                      res.redirect("/task/register");
+                    }
+                  })
+                  .catch((err) => {
+                    flashMessage.message =
+                      "Something went wrong with registration";
+                    flashMessage.state = true;
+                    req.session.flashState = true;
+                    res.redirect("/task/register");
+                  });
+              }
+            });
+          }
+        });
+      } else {
+        flashMessage.message = "Password must be of atleast 5 characters";
+        flashMessage.state = true;
+        req.session.flashState = true;
+        res.redirect("/task/register");
+      }
     } else {
-      console.log("user nhi hai");
+      flashMessage.message = "User already exists";
+      flashMessage.state = true;
+      req.session.flashState = true;
+      res.redirect("/task/register");
     }
   });
 
@@ -63,14 +95,22 @@ router.post("/register", (req, res) => {
 });
 
 router.get("/login", (req, res) => {
-  res.render("../views/login-form");
+  if (req.session.flashState === true) {
+    req.session.flashState = false;
+    res.render("../views/login-form", { flashMessage: flashMessage });
+  } else {
+    flashMessage.state = false;
+    res.render("../views/login-form", { flashMessage: flashMessage });
+  }
 });
 router.post("/login", (req, res) => {
   queryObject
     .findUserWithEmail(req.body.email)
     .then((user) => {
       if (!user) {
-        res.send("Please sign in first");
+        req.session.flashState = true;
+        flashMessage.message = "User does not exists";
+        flashMessage.state = true;
         res.redirect("/task/register");
       } else {
         bcrypt.compare(
@@ -78,11 +118,16 @@ router.post("/login", (req, res) => {
           user.hashedPassword,
           (err, result) => {
             if (!result) {
-              res.send("somthing went wrong with password");
+              req.session.flashState = true;
+              flashMessage.message = "somthing went wrong with password";
+              flashMessage.state = true;
+              res.redirect("/task/login");
             } else {
               req.session.isLoggedIn = true;
               req.session.user = user;
-              res.send("You are logged in successfully");
+              req.session.userName = user.dataValues.name;
+              console.log("user logged in");
+              res.redirect("/task/all");
             }
           }
         );
@@ -90,13 +135,17 @@ router.post("/login", (req, res) => {
     })
     .catch((err) => {
       console.log(err);
-      res.send("Somthing went wrong with this route");
+      flashMessage.message = "Somthing went wrong with this route";
+      flashMessage.state = true;
+      flashMessage.flashState = true;
+      res.redirect("/task/login");
     });
 });
 
 router.get("/logout", (req, res) => {
   req.session.isLoggedIn = false;
-  res.send("You are logged out");
+  app.locals.currentUser = false;
+  res.redirect("/");
 });
 
 module.exports = router;
